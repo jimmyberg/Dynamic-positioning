@@ -3,18 +3,18 @@
 
 class Vector2{
 	float x, y;
-}
+};
 
 class BaseThurster{
 	Vector2 localLocation;
 	float normalRotation;
 	float throttle;
-}
+};
 
 class AzimuthThruster: public BaseThurster{
 	float rotation;
 	float currentRotation;
-}
+};
 
 class Boat{
 public:
@@ -34,8 +34,8 @@ private:
 	float angularMass;
 	Vector2 directianalDamping;
 	float angularDamping;
-}
+};
 
 class controller{
 	*Boat boat;
-}
+};
