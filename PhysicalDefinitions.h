@@ -9,13 +9,15 @@
 #include "Vector2/Vector2.hpp"
 
 class BaseThurster{
-	public:
+public:
 	Vector2<float> localLocation;
 	float normalRotation;
 	float throttle;
+	float maxForce;
 };
 
 class AzimuthThruster: public BaseThurster{
+public:
 	float rotation;
 	float currentRotation;
 };
@@ -29,14 +31,14 @@ public:
 	void setSetpointHeading(float heading);
 
 	AzimuthThruster azimuthThruster[2];
-private:
 	//Positional states
 	//SensorCalculations sensorCalculations;
-	Vector2<float> currentPosition = 0; //Current position of the boat (in X,Y).
-	Vector2<float> currentSpeed = 0; //Current speed of the boat (in X,Y).
-	float setpointSpeed = 0; //The maximal speed you want (user input).
-	Vector2<float> setpointPosition = 0; //The position the boat is heading to.
-	float currentHeading = 0, setpointHeading = 0; //Heading is the amount of degrees.
+	Vector2<float> currentPosition = 0;            //Current position of the boat (in X,Y).
+	Vector2<float> currentSpeed = 0;               //Current speed of the boat (in X,Y).
+	float setpointSpeed = 0;                       //The maximal speed you want (user input).
+	Vector2<float> setpointPosition = 0;           //The position the boat is heading to.
+	float currentHeading = 0, setpointHeading = 0; //Heading is the amount of radians.
+	float currentBoatAngularSpeed = 0;             //How fast the ship is turning is radians per second = 2 * pi * f
 	//Physical properies
 	float mass;
 	float angularMass;
