@@ -25,7 +25,7 @@ public:
 class Boat{
 public:
 	Vector2<float> getPosition();
-	void setSetpointPosition(Vector2 position);
+	void setSetpointPosition(Vector2<float> position);
 
 	float getHeading();
 	void setSetpointHeading(float heading);
@@ -44,15 +44,5 @@ public:
 	float angularMass;
 	Vector2<float> directianalDamping;
 	float angularDamping;
-};
-
-class BoatController{
-	public:
-		Boat *boat;
-	private:
-		float calculateHeading(Vector2 currentPosition, Vector2 setpointPosition);
-		PIDController xController;
-		PIDController yController;
-		PIDController hController;
 };
 #endif

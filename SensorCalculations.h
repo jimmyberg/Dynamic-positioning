@@ -3,10 +3,7 @@
 #define false 0
 #define true 1
 #include <string>
-#include "PhysicalDefinitions.h"
-//#define uint unsigned int
-
-class Vector2;
+#include "Vector2/Vector2.hpp"
 
 class SensorCalculations
 {
@@ -15,13 +12,13 @@ public:
   //Uses speed, accelerationsensor, Heading.
   void calculateSpeed(float speed);
 
-  Vector2 getPosition();
-  Vector2 getSpeed();
+  Vector2<float> getPosition();
+  Vector2<float> getSpeed();
   float getHeading();
 
 private:
   float heading = 0;
-  Vector2 speed;
+  Vector2<float >speed;
 };
 
 class gps
