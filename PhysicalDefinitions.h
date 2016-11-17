@@ -1,9 +1,15 @@
+#ifndef _PHYSICALDEFINITIONS_H_
+#define _PHYSICALDEFINITIONS_H_
+
+#include "PIDController.h"
+#include "SensorCalculations.h"
 
 //Al units are in basic SI units. m, kg, s etc. unless other specified
 
 #include "Vector2/Vector2.hpp"
 
 class BaseThurster{
+	public:
 	Vector2<float> localLocation;
 	float normalRotation;
 	float throttle;
@@ -17,7 +23,11 @@ class AzimuthThruster: public BaseThurster{
 class Boat{
 public:
 	Vector2<float> getPosition();
-	void gotoPosition(Vector2<float> newPosition, float speed);
+	void setSetpointPosition(Vector2 position);
+
+	float getHeading();
+	void setSetpointHeading(float heading);
+
 	AzimuthThruster azimuthThruster[2];
 private:
 	//Positional states
@@ -34,6 +44,13 @@ private:
 	float angularDamping;
 };
 
-class controller{
-	Boat* boat;
+class BoatController{
+	public:
+		Boat *boat;
+	private:
+		float calculateHeading(Vector2 currentPosition, Vector2 setpointPosition);
+		PIDController xController;
+		PIDController yController;
+		PIDController hController;
 };
+#endif
