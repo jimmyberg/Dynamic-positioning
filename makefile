@@ -1,5 +1,5 @@
 FILEOUT = dynpos
-FILES = main.cpp PIDController.cpp
+FILES = main.cpp PIDController.cpp BoatController.cpp SensorCalculations.cpp
 PARAM = -std=c++11 -O0
 
 all:
