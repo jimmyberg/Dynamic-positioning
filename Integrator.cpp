@@ -5,7 +5,7 @@ Integrator::Integrator(float idT):
 	dT(idT){}
 
 Integrator::Integrator(float idT, float iy):
-	dt(idT),
+	dT(idT),
 	y(iy){}
 
 float Integrator::update(float input){
