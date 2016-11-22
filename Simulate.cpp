@@ -57,8 +57,8 @@ void SimulatedWorld::calculateWorldTick(){
 	boat->currentSpeed.x = velocityX.update(globalForce.x / boat->mass);
 	boat->currentSpeed.y = velocityY.update(globalForce.y / boat->mass);
 	//Integrate vellocity to accleration
-	boat->currentPosition = positionX.update(velocityX.getCurrentOutput());
-	boat->currentPosition = positionY.update(velocityY.getCurrentOutput());
+	boat->currentPosition.x = positionX.update(velocityX.getCurrentOutput());
+	boat->currentPosition.y = positionY.update(velocityY.getCurrentOutput());
 	//integrate angular acceleration to angular velocity
 	boat->currentBoatAngularSpeed = radiansPerSecond.update(currentTorque / boat->angularMass);
 	//integrate angular velocity to angle
