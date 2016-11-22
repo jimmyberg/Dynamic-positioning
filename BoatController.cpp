@@ -17,9 +17,9 @@ BoatController::BoatController(Boat *b){
 
     //Create the PIDController instances
     //NEED TO ADD A WAY TO SET THE CONSTANTS
-    xController = new PIDController(1.0, 0.0, 0.2, 0.0, 0.0);
-    yController = new PIDController(1.0, 0.0, 0.2, 0.0, 0.0);
-    hController = new PIDController(2.0, 0.0, 0.2, 0.0, 0.0);
+    xController = new PIDController;
+    yController = new PIDController;
+    hController = new PIDController;
 }
 
 BoatController::~BoatController(){
