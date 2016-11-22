@@ -9,7 +9,10 @@ PIDController(
     0.0,
     0.0,
     0.0,
-    0.0,
+    0.0){}
+
+PIDController::PIDController(float p, float i, float d, float prev, float integral):
+PIDController(p, i, d, prev, integral,
     std::chrono::duration<float>(std::chrono::duration_values<float>::zero())){}
 
 PIDController::PIDController(float p, float i, float d, float prev, float integral, std::chrono::duration<float> sampleTime):
