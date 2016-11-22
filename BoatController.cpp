@@ -68,3 +68,29 @@ void BoatController::controlFunction(){
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
+
+void BoatController::singleStep(){
+    periodTime = std::chrono::duration<float>(std::chrono::milliseconds(10));
+
+    //Calculate the current error in the position data
+    float errorX = boat->currentPosition.x - boat->setpointPosition.x;
+    float errorY = boat->currentPosition.y - boat->setpointPosition.y;
+    float errorH = boat->currentHeading - boat->setpointHeading;
+
+    float xSignal = xController->calculateOutput(errorX, periodTime);
+    float ySignal = yController->calculateOutput(errorY, periodTime);
+    float hSignal = hController->calculateOutput(errorH, periodTime);
+
+    float anglePosition = atan2(ySignal, xSignal);
+    float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
+
+    float throttleHeading = hSignal;
+
+    float angle1Heading = (hSignal > 0.0) ? M_PI_2 : (M_PI + M_PI_2);
+    float angle2Heading = (hSignal > 0.0) ? (M_PI + M_PI_2) : M_PI_2;
+
+    boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);        
+    boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading) / 2.0;
+    boat->azimuthThruster[1].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);
+    boat->azimuthThruster[1].rotation = (anglePosition + angle2Heading) / 2.0;    
+}

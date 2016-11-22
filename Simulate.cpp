@@ -52,7 +52,7 @@ void SimulatedWorld::calculateWorldTick(){
 	//Translate the localForce to global force.
 	Vector2<float> globalForce = localForce.rotated(boat->currentHeading);
 	//Add damping to the global force
-	globalForce -= (boat->currentSpeed * boat->directianalDamping.rotated(boat->currentHeading));
+	globalForce -= (boat->currentSpeed * boat->directionalDamping.rotated(boat->currentHeading));
 	//Integrate acceleration to velocity
 	boat->currentSpeed.x = velocityX.update(globalForce.x / boat->mass);
 	boat->currentSpeed.y = velocityY.update(globalForce.y / boat->mass);

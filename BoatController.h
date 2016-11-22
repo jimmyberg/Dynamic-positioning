@@ -16,6 +16,8 @@ class BoatController{
 
         bool isRunning() {return running;};
 
+        void singleStep();
+
 	private:
         Boat *boat;
         std::thread controlThread;
