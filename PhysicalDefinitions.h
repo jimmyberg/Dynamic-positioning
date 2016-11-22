@@ -42,7 +42,7 @@ public:
 	//Physical properies
 	float mass;
 	float angularMass;
-	Vector2<float> directianalDamping;
+	Vector2<float> directionalDamping;
 	float angularDamping;
 };
 #endif
