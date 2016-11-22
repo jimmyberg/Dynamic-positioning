@@ -12,7 +12,7 @@ float BoatController::calculateHeading(Vector2<float> currentPosition, Vector2<f
 
 BoatController::BoatController(Boat *b){
     //Store the pointer to the boat object
-    *boat = b;
+    boat = b;
 
     running = false;
 }
