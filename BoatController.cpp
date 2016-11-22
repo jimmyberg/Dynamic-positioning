@@ -28,6 +28,7 @@ BoatController::~BoatController(){
 
 void BoatController::startControl(){
     running = true;
+    lastTime = std::chrono::high_resolution_clock::now();
     controlThread = std::thread(&BoatController::controlFunction, this);
 }
 
@@ -43,9 +44,9 @@ void BoatController::controlFunction(){
         lastTime = currentTime;
 
         //Calculate the current error in the position data
-        float errorX = abs(boat->currentPosition.x - boat->setpointPosition.x);
-        float errorY = abs(boat->currentPosition.y - boat->setpointPosition.y);
-        float errorH = abs(boat->currentHeading - boat->setpointHeading);
+        float errorX = boat->currentPosition.x - boat->setpointPosition.x;
+        float errorY = boat->currentPosition.y - boat->setpointPosition.y;
+        float errorH = boat->currentHeading - boat->setpointHeading;
 
         float xSignal = xController->calculateOutput(errorX, periodTime);
         float ySignal = yController->calculateOutput(errorY, periodTime);
@@ -63,5 +64,7 @@ void BoatController::controlFunction(){
         boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading) / 2.0;
         boat->azimuthThruster[1].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);
         boat->azimuthThruster[1].rotation = (anglePosition + angle2Heading) / 2.0;
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
