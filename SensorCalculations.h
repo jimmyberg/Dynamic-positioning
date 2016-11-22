@@ -5,43 +5,30 @@
 #include <string>
 #include "Vector2/Vector2.hpp"
 
+//kalman
+//Prediction Speed,
+//Lastspeed + time * Acceleration
+//
+//Predictment Position X,Y
+//LastMesurement + (Speed * time) * lastspeed + 0.5 * acceleration * speed * (time* time) 
 class SensorCalculations
 {
 public:
   //Calcualtes currentSpeed.
   //Uses speed, accelerationsensor, Heading.
-  void calculateSpeed(float speed);
+  void predictSpeed(Vector2<float> speed, float time, float acceleration);
 
-  Vector2<float> getPosition();
+  void predictNextLocation(Vector2<float> setpointPosition, Vector2<float> speed, float timePeriod, float acceleration);
+  
   Vector2<float> getSpeed();
   float getHeading();
 
 private:
+  Vector2<float> predictedLocation[10];
+  Vector2<float> predictedSpeed[10];
   float heading = 0;
-  Vector2<float >speed;
+  Vector2<float> speed = 0;
+  Vector2<float> currentPosition = 0;
 };
 
-class gps
-{
-public:
-  void Sensor(std::string type);
-  void setNewValue(int value);
-
-private:
-  unsigned int newValue = 0, previousValue = 0;
-};
-
-class Accelerometer
-{
-  int getSensorValue();
-};
-
-/*class Sensor
-{
-public:
-    std::string type() const { return _type; } 
-    void bar(const std::string& bar) { _type = bar; } 
-private:
-    std::string _type;
-};*/
 #endif
