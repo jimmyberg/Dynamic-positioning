@@ -14,12 +14,12 @@ int main(void){
 
 	cout << boat.currentPosition << endl;
 	cout << boat.azimuthThruster[0].throttle << endl;
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		for (int j = 0; j < 10; ++j)
 		{
 			simulation.calculateWorldTick();
-			cout << boat.currentPosition << endl;
+			//cout << boat.currentPosition << endl;
 		}
 		boatController.singleStep();
 	}

@@ -25,8 +25,8 @@ void SimulatedWorld::calculateWorldTick(){
 	for (int i = 0; i < 2; ++i){
 		//First calculate the force the is acting on the motor
 		Vector2<float> localForceOnMotor(
-			sin(boat->azimuthThruster->normalRotation + boat->azimuthThruster[i].currentRotation),
-			cos(boat->azimuthThruster->normalRotation + boat->azimuthThruster[i].currentRotation));
+			sin(boat->azimuthThruster[i].normalRotation + boat->azimuthThruster[i].currentRotation),
+			cos(boat->azimuthThruster[i].normalRotation + boat->azimuthThruster[i].currentRotation));
 		localForceOnMotor *= boat->azimuthThruster[i].throttle * boat->azimuthThruster[i].maxForce;
 		/**
 		 * Caclulate the torque due to the forces from the motors.
@@ -57,8 +57,8 @@ void SimulatedWorld::calculateWorldTick(){
 	boat->currentSpeed.x = velocityX.update(globalForce.x / boat->mass);
 	boat->currentSpeed.y = velocityY.update(globalForce.y / boat->mass);
 	//Integrate vellocity to accleration
-	boat->currentPosition = positionX.update(velocityX.getCurrentOutput());
-	boat->currentPosition = positionY.update(velocityY.getCurrentOutput());
+	boat->currentPosition.x = positionX.update(velocityX.getCurrentOutput());
+	boat->currentPosition.y = positionY.update(velocityY.getCurrentOutput());
 	//integrate angular acceleration to angular velocity
 	boat->currentBoatAngularSpeed = radiansPerSecond.update(currentTorque / boat->angularMass);
 	//integrate angular velocity to angle
