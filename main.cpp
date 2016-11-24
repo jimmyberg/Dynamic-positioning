@@ -26,7 +26,13 @@ int main(void){
 		for (int j = 0; j < 10; ++j)
 		{
 			simulation.calculateWorldTick();
-			cout << ((i * 10) + j) * 0.001 << ',' << boat.currentPosition.x << ',' << boat.currentPosition.y << endl;
+			cout 
+				<< ((i * 10) + j) * 0.001 
+				<< ',' << boat.azimuthThruster[0].rotation 
+				<< ',' << boat.azimuthThruster[1].rotation 
+				<< ',' << boat.currentPosition.x 
+				<< ',' << boat.currentPosition.y 
+				<< endl;
 		}
 		boatController.singleStep();
 	}
