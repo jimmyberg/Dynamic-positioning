@@ -13,15 +13,17 @@ int main(void){
 	boat.setpointPosition.y = 2000.0;
 	boat.mass = 10;
 	boat.angularMass = 5;
+	boat.azimuthThruster[0].localLocation = Vector2<float>(0, 1);
+	boat.azimuthThruster[0].maxForce = 10;
+	boat.azimuthThruster[1].localLocation = Vector2<float>(0, -1);
+	boat.azimuthThruster[1].maxForce = 10;
 
-	cout << boat.currentPosition << endl;
-	cout << boat.azimuthThruster[0].throttle << endl;
 	for (int i = 0; i < 10; ++i)
 	{
 		for (int j = 0; j < 10; ++j)
 		{
 			simulation.calculateWorldTick();
-			cout << boat.currentPosition << endl;
+			cout << ((i * 10) + j) * 0.001 << ',' << boat.currentPosition.x << ',' << boat.currentPosition.y << endl;
 		}
 		boatController.singleStep();
 	}

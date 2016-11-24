@@ -3,6 +3,12 @@
 #include "Integrator.h"
 #include <cmath>
 
+//#define DEBUG_SIMULATE_DYNPOS
+#ifdef DEBUG_SIMULATE_DYNPOS
+	#include <iostream>
+#endif //DEBUG_SIMULATE_DYNPOS
+
+
 SimulatedWorld::SimulatedWorld(Boat* iboat, float idT):
 	boat(iboat),
 	dT(idT){}
@@ -46,12 +52,20 @@ void SimulatedWorld::calculateWorldTick(){
 				Vector2<float>::dotProduct(localForceOnMotor, boat->azimuthThruster[i].localLocation)
 			) * 
 			boat->azimuthThruster[i].localLocation.normalized();
+		#ifdef DEBUG_SIMULATE_DYNPOS
+		std::cout << "localForceOnMotor = " << localForceOnMotor << std::endl;
+		std::cout << "currentTorque = " << currentTorque << std::endl;
+		std::cout << "localForce = " << localForce << std::endl;
+		#endif
 	}
 	//Add damping to the torque
 	currentTorque -= boat->currentBoatAngularSpeed * boat->angularDamping;
 	//Translate the localForce to global force.
 	Vector2<float> globalForce = localForce.rotated(boat->currentHeading);
 	//Add damping to the global force
+	#ifdef DEBUG_SIMULATE_DYNPOS
+	std::cout << "localForce = " << localForce << std::endl;
+	#endif
 	globalForce -= (boat->currentSpeed * boat->directionalDamping.rotated(boat->currentHeading));
 	//Integrate acceleration to velocity
 	boat->currentSpeed.x = velocityX.update(globalForce.x / boat->mass);
