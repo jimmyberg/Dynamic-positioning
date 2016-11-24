@@ -16,10 +16,10 @@ int main(void){
 	boat.angularMass = 5;
 	boat.azimuthThruster[0].localLocation = Vector2<float>(0, 1);
 	boat.azimuthThruster[0].maxForce = 10;
-	boat.azimuthThruster[0].normalRotation = M_PI_2;
+	boat.azimuthThruster[0].normalRotation = M_PI;
 	boat.azimuthThruster[1].localLocation = Vector2<float>(0, -1);
 	boat.azimuthThruster[1].maxForce = 10;
-	boat.azimuthThruster[1].normalRotation = M_PI_2;
+	boat.azimuthThruster[1].normalRotation = M_PI;
 
 	for (int i = 0; i < 100; ++i)
 	{
