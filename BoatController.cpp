@@ -81,18 +81,24 @@ void BoatController::singleStep(){
     float ySignal = yController->calculateOutput(errorY, periodTime);
     float hSignal = hController->calculateOutput(errorH, periodTime);
 
-    std::cout << "xSignal: " << xSignal << " ySignal: " << ySignal << " hSignal: " << hSignal << std::endl;
-
-    float anglePosition = atan2(ySignal, xSignal);
+    float anglePosition = 2 * M_PI - atan2(ySignal, xSignal) - boat->currentHeading;
     float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
 
     float throttleHeading = hSignal;
 
-    float angle1Heading = (hSignal > 0.0) ? M_PI_2 : (M_PI + M_PI_2);
-    float angle2Heading = (hSignal > 0.0) ? (M_PI + M_PI_2) : M_PI_2;
+    float angle1Heading = 0.0;
+    float angle2Heading = 0.0;
 
-    boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);        
+    if(hSignal > 0.01){
+        angle1Heading = M_PI_2;
+        angle2Heading = M_PI_2 + M_PI;
+    }else if(hSignal < -0.01){
+        angle1Heading = M_PI_2 + M_PI;
+        angle2Heading = M_PI_2;
+    }
+
+    boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-1.0, (float)1.0);        
     boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading);
-    boat->azimuthThruster[1].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);
+    boat->azimuthThruster[1].throttle = limit(throttlePosition + throttleHeading, (float)-1.0, (float)1.0);
     boat->azimuthThruster[1].rotation = (anglePosition + angle2Heading);    
 }

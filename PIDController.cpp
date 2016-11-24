@@ -13,29 +13,31 @@ PIDController(
     1.0,
     std::chrono::duration<float>(std::chrono::duration_values<float>::zero())){}
 
-PIDController::PIDController(float p, float i, float d, float prev, float iGain, float integral):
+PIDController::PIDController(float p, float i, float d, float prev, float integral, float iGain):
 PIDController(p, i, d, prev, integral, iGain, std::chrono::duration<float>(std::chrono::duration_values<float>::zero())){}
 
 PIDController::PIDController(float p, float i, float d, float prev, float integral, float iGain, std::chrono::duration<float> sampleTime):
     Kp(p),
     Ki(i),
     Kd(d),
-    dT(sampleTime),
     inputGain(iGain),
+    dT(sampleTime),
     ePrevious(prev),
     eIntegral(integral){}
 
 PIDController::~PIDController(){}
 
 float PIDController::calculateOutput(float eInput){
+    float eInputGained = eInput * inputGain; 
+
     //Integrating the error
-    eIntegral += eInput * dT.count();
+    eIntegral += eInputGained * dT.count();
     //Derivative of error
-    float eDeriv = (eInput - ePrevious) / dT.count();
+    float eDeriv = (eInputGained - ePrevious) / dT.count();
     //Store the current error as previous
-    ePrevious = eInput;
+    ePrevious = eInputGained;
     //Calculate the control signal
-    controlOutput = Kp * eInput + Ki * eIntegral + Kd * eDeriv;
+    controlOutput = Kp * eInputGained + Ki * eIntegral + Kd * eDeriv;
 
     return controlOutput; 
 }
