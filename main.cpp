@@ -9,8 +9,8 @@ int main(void){
 	Boat boat;
 	SimulatedWorld simulation(&boat, 0.001);
 	BoatController boatController(&boat);
-	boat.setpointPosition.x = 1000.0;
-	boat.setpointPosition.y = 2000.0;
+	boat.setpointPosition.x = 1.0;
+	boat.setpointPosition.y = 2.0;
 	boat.mass = 10;
 	boat.angularMass = 5;
 	boat.azimuthThruster[0].localLocation = Vector2<float>(0, 1);
