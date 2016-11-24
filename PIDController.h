@@ -7,15 +7,15 @@
 class PIDController{
     public:
         PIDController();
-        PIDController(float p, float i, float d, float prev, float integral);
-        PIDController(float p, float i, float d, float prev, float integral, std::chrono::duration<float> sampleTime);
+        PIDController(float p, float i, float d, float prev, float integral, float iGain);
+        PIDController(float p, float i, float d, float prev, float integral, float iGain, std::chrono::duration<float> sampleTime);
         ~PIDController();
         
         float calculateOutput(float eInput);
         float calculateOutput(float eInput, std::chrono::duration<float> sampleTime);
         float getOutput();
         
-        float Kp, Ki, Kd; //P, I and D constants
+        float Kp, Ki, Kd, inputGain; //P, I and D constants
         std::chrono::duration<float> dT; //Sampling time
         
     private:
