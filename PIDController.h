@@ -7,6 +7,7 @@
 class PIDController{
     public:
         PIDController();
+        PIDController(float p, float i, float d, float prev, float integral);
         PIDController(float p, float i, float d, float prev, float integral, std::chrono::duration<float> sampleTime);
         ~PIDController();
         

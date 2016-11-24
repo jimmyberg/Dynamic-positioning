@@ -17,13 +17,13 @@ BoatController::BoatController(Boat *b){
 
     //Create the PIDController instances
     //NEED TO ADD A WAY TO SET THE CONSTANTS
-    xController = new PIDController;
-    yController = new PIDController;
-    hController = new PIDController;
+    xController = new PIDController(1.0, 0.0, 0.5, 0.0, 0.0);
+    yController = new PIDController(1.0, 0.0, 0.5, 0.0, 0.0);
+    hController = new PIDController(2.0, 0.0, 0.5, 0.0, 0.0);
 }
 
 BoatController::~BoatController(){
-    stopControl();
+    //stopControl();
 }
 
 void BoatController::startControl(){
@@ -90,7 +90,7 @@ void BoatController::singleStep(){
     float angle2Heading = (hSignal > 0.0) ? (M_PI + M_PI_2) : M_PI_2;
 
     boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);        
-    boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading) / 2.0;
+    boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading);
     boat->azimuthThruster[1].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);
-    boat->azimuthThruster[1].rotation = (anglePosition + angle2Heading) / 2.0;    
+    boat->azimuthThruster[1].rotation = (anglePosition + angle2Heading);    
 }
