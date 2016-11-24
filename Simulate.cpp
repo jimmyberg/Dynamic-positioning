@@ -31,8 +31,9 @@ void SimulatedWorld::calculateWorldTick(){
 	for (int i = 0; i < 2; ++i){
 		//First calculate the force the is acting on the motor
 		Vector2<float> localForceOnMotor(
-			sin(boat->azimuthThruster[i].normalRotation + boat->azimuthThruster[i].currentRotation),
-			cos(boat->azimuthThruster[i].normalRotation + boat->azimuthThruster[i].currentRotation));
+			float angle = -boat->azimuthThruster[i].normalRotation - boat->azimuthThruster[i].currentRotation;
+			sin(angle),
+			cos(angle);
 		localForceOnMotor *= boat->azimuthThruster[i].throttle * boat->azimuthThruster[i].maxForce;
 		/**
 		 * Caclulate the torque due to the forces from the motors.
