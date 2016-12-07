@@ -9,5 +9,5 @@ Integrator::Integrator(float idT, float iy):
 	y(iy){}
 
 float Integrator::update(float input){
-	return y = y + ((input + x_1) / 2);
+	return y = y + ((input + x_1) * dT / 2);
 }
