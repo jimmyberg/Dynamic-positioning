@@ -19,7 +19,6 @@ public:
 class AzimuthThruster: public BaseThurster{
 public:
 	float rotation = 0;
-	float currentRotation = 0;
 };
 
 class Boat{
