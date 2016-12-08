@@ -33,7 +33,7 @@ void SimulatedWorld::calculateWorldTick(){
 	#endif
 	for (int i = 0; i < 2; ++i){
 		//First calculate the force the is acting on the motor
-		float angle = boat->azimuthThruster[i].normalRotation + boat->azimuthThruster[i].currentRotation;
+		float angle = boat->azimuthThruster[i].normalRotation + boat->azimuthThruster[i].rotation;
 		Vector2<float> localForceOnMotor(
 			cos(angle),
 			sin(angle));
