@@ -81,7 +81,7 @@ void BoatController::singleStep(){
     float ySignal = yController->calculateOutput(errorY, periodTime);
     float hSignal = hController->calculateOutput(errorH, periodTime);
 
-    float anglePosition = - M_PI_2 + atan2(ySignal, xSignal) - boat->currentHeading;
+    float anglePosition = -atan2(xSignal, ySignal) + boat->currentHeading;
     float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
 
     float throttleHeading = hSignal;
