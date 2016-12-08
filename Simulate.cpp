@@ -33,10 +33,10 @@ void SimulatedWorld::calculateWorldTick(){
 	#endif
 	for (int i = 0; i < 2; ++i){
 		//First calculate the force the is acting on the motor
-		float angle = -boat->azimuthThruster[i].normalRotation - boat->azimuthThruster[i].currentRotation;
+		float angle = boat->azimuthThruster[i].normalRotation + boat->azimuthThruster[i].currentRotation;
 		Vector2<float> localForceOnMotor(
-			sin(angle),
-			cos(angle));
+			cos(angle),
+			sin(angle));
 		localForceOnMotor *= boat->azimuthThruster[i].throttle * boat->azimuthThruster[i].maxForce;
 		/**
 		 * Caclulate the torque due to the forces from the motors.
@@ -51,12 +51,7 @@ void SimulatedWorld::calculateWorldTick(){
 		 * This can be done by using the dot procuct of the two vectors and 
 		 * point it in the direction of its local rotation
 		 */
-		localForce += 
-			Vector2<float>(
-				Vector2<float>::dotProduct(localForceOnMotor, boat->azimuthThruster[i].localLocation)
-			) * 
-			boat->azimuthThruster[i].localLocation / 
-			pow(boat->azimuthThruster[i].localLocation.absolute(), 2);
+		localForce += localForceOnMotor;
 		#ifdef DEBUG_SIMULATE_DYNPOS
 		std::cout << "Results for motor[" << i << ']' << std::endl;
 		std::cout << "motor position = " << boat->azimuthThruster[i].localLocation << std::endl;
