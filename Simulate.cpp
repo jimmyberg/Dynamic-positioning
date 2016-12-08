@@ -15,19 +15,22 @@ SimulatedWorld::SimulatedWorld(Boat* iboat, float idT):
 
 void SimulatedWorld::calculateWorldTick(){
 	//A integrator will be used to translate acceleration to velocity.
-	static Integrator velocityX(dT);
-	static Integrator velocityY(dT);
+	static Integrator velocityX(dT, boat->currentSpeed.x);
+	static Integrator velocityY(dT, boat->currentSpeed.y);
 	//A integrator will be used to translate velocity to position.
-	static Integrator positionX(dT);
-	static Integrator positionY(dT);
+	static Integrator positionX(dT, boat->currentPosition.x);
+	static Integrator positionY(dT, boat->currentPosition.y);
 	//A integrator will be used to translate torque / angular mass to radians per second.
-	static Integrator radiansPerSecond(dT);
+	static Integrator radiansPerSecond(dT, boat->currentBoatAngularSpeed);
 	//A integrator will be used to translate radians per second to radians.
-	static Integrator radians(dT);
+	static Integrator radians(dT, boat->currentHeading);
 	//Defining to-be-calculated forces on boat
 	float currentTorque = 0;
 	Vector2<float> localForce = 0;
 	//Calculate each force from every thruster.
+	#ifdef DEBUG_SIMULATE_DYNPOS
+	std::cout << "*\tDebug data for void SimulatedWorld::calculateWorldTick()" << std::endl;
+	#endif
 	for (int i = 0; i < 2; ++i){
 		//First calculate the force the is acting on the motor
 		float angle = -boat->azimuthThruster[i].normalRotation - boat->azimuthThruster[i].currentRotation;
@@ -52,11 +55,14 @@ void SimulatedWorld::calculateWorldTick(){
 			Vector2<float>(
 				Vector2<float>::dotProduct(localForceOnMotor, boat->azimuthThruster[i].localLocation)
 			) * 
-			boat->azimuthThruster[i].localLocation.normalized();
+			boat->azimuthThruster[i].localLocation / 
+			pow(boat->azimuthThruster[i].localLocation.absolute(), 2);
 		#ifdef DEBUG_SIMULATE_DYNPOS
+		std::cout << "Results for motor[" << i << ']' << std::endl;
+		std::cout << "motor position = " << boat->azimuthThruster[i].localLocation << std::endl;
 		std::cout << "localForceOnMotor = " << localForceOnMotor << std::endl;
-		std::cout << "currentTorque = " << currentTorque << std::endl;
-		std::cout << "localForce = " << localForce << std::endl;
+		std::cout << "currentTorque now = " << currentTorque << std::endl;
+		std::cout << "localForce now = " << localForce << '\n' << std::endl;
 		#endif
 	}
 	//Add damping to the torque
@@ -65,7 +71,12 @@ void SimulatedWorld::calculateWorldTick(){
 	Vector2<float> globalForce = localForce.rotated(boat->currentHeading);
 	//Add damping to the global force
 	#ifdef DEBUG_SIMULATE_DYNPOS
-	std::cout << "localForce = " << localForce << std::endl;
+	std::cout << "*************************************" << std::endl;
+	std::cout << "localForce total = " << localForce << std::endl;
+	std::cout << "currentHeading = " << boat->currentHeading << std::endl;
+	std::cout << "globalForce = " << globalForce << std::endl;
+	std::cout << "currentTorque total = " << currentTorque << std::endl;
+	std::cout << "*************************************" << std::endl;
 	#endif
 	globalForce -= (boat->currentSpeed * boat->directionalDamping.rotated(boat->currentHeading));
 	//Integrate acceleration to velocity
