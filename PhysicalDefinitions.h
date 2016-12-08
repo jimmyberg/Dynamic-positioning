@@ -24,12 +24,6 @@ public:
 
 class Boat{
 public:
-	Vector2<float> getPosition();
-	void setSetpointPosition(Vector2<float> position);
-
-	float getHeading();
-	void setSetpointHeading(float heading);
-
 	AzimuthThruster azimuthThruster[2];
 	//Positional states
 	//SensorCalculations sensorCalculations;
