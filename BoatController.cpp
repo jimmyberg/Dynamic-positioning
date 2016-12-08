@@ -11,15 +11,12 @@ float BoatController::calculateHeading(Vector2<float> currentPosition, Vector2<f
     return atan2 (y,x);
 }
 
-BoatController::BoatController(Boat *b){
-    //Store the pointer to the boat object
-    boat = b;
-
+BoatController::BoatController(Boat *b):boat(b){
     //Create the PIDController instances
     //NEED TO ADD A WAY TO SET THE CONSTANTS
-    xController = new PIDController(1.0, 0.0, 0.5, 0.0, 0.0, 0.01);
-    yController = new PIDController(1.0, 0.0, 0.5, 0.0, 0.0, 0.01);
-    hController = new PIDController(2.0, 0.0, 0.5, 0.0, 0.0, 1.0);
+    xController = PIDController(1.0, 0.0, 0.0, 0.0, 0.0, 0.1);
+    yController = PIDController(1.0, 0.0, 0.0, 0.0, 0.0, 0.1);
+    hController = PIDController(2.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 }
 
 BoatController::~BoatController(){
@@ -48,9 +45,9 @@ void BoatController::controlFunction(){
         float errorY = boat->currentPosition.y - boat->setpointPosition.y;
         float errorH = boat->currentHeading - boat->setpointHeading;
 
-        float xSignal = xController->calculateOutput(errorX, periodTime);
-        float ySignal = yController->calculateOutput(errorY, periodTime);
-        float hSignal = hController->calculateOutput(errorH, periodTime);
+        float xSignal = xController.calculateOutput(errorX, periodTime);
+        float ySignal = yController.calculateOutput(errorY, periodTime);
+        float hSignal = hController.calculateOutput(errorH, periodTime);
 
         float anglePosition = atan2(ySignal, xSignal);
         float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
@@ -77,9 +74,9 @@ void BoatController::singleStep(){
     float errorY = boat->setpointPosition.y - boat->currentPosition.y;
     float errorH = boat->setpointHeading - boat->currentHeading;
 
-    float xSignal = xController->calculateOutput(errorX, periodTime);
-    float ySignal = yController->calculateOutput(errorY, periodTime);
-    float hSignal = hController->calculateOutput(errorH, periodTime);
+    float xSignal = xController.calculateOutput(errorX, periodTime);
+    float ySignal = yController.calculateOutput(errorY, periodTime);
+    float hSignal = hController.calculateOutput(errorH, periodTime);
 
     float anglePosition = -atan2(xSignal, ySignal) + boat->currentHeading;
     float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
