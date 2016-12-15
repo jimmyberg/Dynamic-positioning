@@ -3,3 +3,4 @@ prog
 .vscode*
 compileAndRun
 doxygen_output/
+*.csv

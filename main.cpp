@@ -13,7 +13,7 @@ int main(void){
     boat.currentPosition.x = 0.0;
     boat.currentPosition.y = 0.0;
     boat.setpointPosition.x = 1.0;
-    boat.setpointPosition.y = 2.0;
+    boat.setpointPosition.y = 1.0;
     boat.mass = 10;
     boat.angularMass = 5;
     boat.azimuthThruster[0].localLocation = Vector2<float>(0, 1);
@@ -27,26 +27,29 @@ int main(void){
     boat.azimuthThruster[1].normalRotation = M_PI_2;
     boat.azimuthThruster[1].throttle = 0;
     boat.currentHeading = 0;
-    for (int i = 0; i < 100; ++i)
+
+	cout << "time,thruster0rotation,thrust0,thruster1rotation,thrust1,x,y,errorX,errorY,errorH" << endl;
+    for (int i = 0; i < 3000; ++i)
     {
 		for (int j = 0; j < 10; ++j)
 		{
 			simulation.calculateWorldTick();
-			cout.width(10);
-			cout << ((i * 10) + j) * 0.001 << ",";
-			cout.width(10);
-			cout << boat.azimuthThruster[0].rotation + boat.azimuthThruster[0].normalRotation << ",";
-			cout.width(10);
-			cout << boat.azimuthThruster[0].throttle << ",";
-			cout.width(10);
-			cout << boat.azimuthThruster[1].rotation + boat.azimuthThruster[1].normalRotation << ",";
-			cout.width(10);
-			cout << boat.azimuthThruster[1].throttle << ",";
-			cout.width(10);
-			cout << boat.currentPosition.x << ",";
-			cout.width(10);
-			cout << boat.currentPosition.y;
-			cout << endl;
+
+            float errorX = boat.setpointPosition.x - boat.currentPosition.x;
+            float errorY = boat.setpointPosition.y - boat.currentPosition.y;
+            float errorH = boat.setpointHeading - boat.currentHeading;
+
+			cout << ((i * 10) + j) * 0.001 << ","
+			<< boat.azimuthThruster[0].rotation + boat.azimuthThruster[0].normalRotation << ","
+			<< boat.azimuthThruster[0].throttle << ","
+			<< boat.azimuthThruster[1].rotation + boat.azimuthThruster[1].normalRotation << ","
+			<< boat.azimuthThruster[1].throttle << ","
+			<< boat.currentPosition.x << ","
+			<< boat.currentPosition.y << ","
+            << errorX << ","
+            << errorY << ","
+            << errorH
+			<< endl;
 		}
 		boatController.singleStep();
     }

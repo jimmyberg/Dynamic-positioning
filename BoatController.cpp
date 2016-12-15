@@ -78,21 +78,13 @@ void BoatController::singleStep(){
     float ySignal = yController.calculateOutput(errorY, periodTime);
     float hSignal = hController.calculateOutput(errorH, periodTime);
 
-    float anglePosition = -atan2(xSignal, ySignal) + boat->currentHeading;
+    float anglePosition = atan2(xSignal, ySignal) - M_PI_2 + boat->currentHeading;
     float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
 
     float throttleHeading = hSignal;
 
     float angle1Heading = 0.0;
     float angle2Heading = 0.0;
-
-    if(hSignal > 0.01){
-        angle1Heading = M_PI_2;
-        angle2Heading = M_PI_2 + M_PI;
-    }else if(hSignal < -0.01){
-        angle1Heading = M_PI_2 + M_PI;
-        angle2Heading = M_PI_2;
-    }
 
     boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-1.0, (float)1.0);        
     boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading);
