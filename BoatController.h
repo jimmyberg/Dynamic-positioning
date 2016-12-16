@@ -27,9 +27,9 @@ class BoatController{
         bool running = false;
 
         //Controllers
-        PIDController *xController;
-		PIDController *yController;
-		PIDController *hController;
+        PIDController xController;
+		PIDController yController;
+		PIDController hController;
 
         void controlFunction();
 		float calculateHeading(Vector2<float> currentPosition, Vector2<float> setpointPosition);
