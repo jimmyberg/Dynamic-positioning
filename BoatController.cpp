@@ -14,8 +14,8 @@ float BoatController::calculateHeading(Vector2<float> currentPosition, Vector2<f
 BoatController::BoatController(Boat *b):boat(b){
     //Create the PIDController instances
     //NEED TO ADD A WAY TO SET THE CONSTANTS
-    xController = PIDController(1.0, 0.0, 0.0, 0.0, 0.0, 0.1);
-    yController = PIDController(1.0, 0.0, 0.0, 0.0, 0.0, 0.1);
+    xController = PIDController(2.0, 0.0, 10.0, 0.0, 0.0, 0.1);
+    yController = PIDController(2.0, 0.0, 10.0, 0.0, 0.0, 0.1);
     hController = PIDController(2.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 }
 
@@ -78,7 +78,7 @@ void BoatController::singleStep(){
     float ySignal = yController.calculateOutput(errorY, periodTime);
     float hSignal = hController.calculateOutput(errorH, periodTime);
 
-    float anglePosition = atan2(xSignal, ySignal) - M_PI_2 + boat->currentHeading;
+    float anglePosition = atan2(ySignal, xSignal) - M_PI_2 + boat->currentHeading;
     float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
 
     float throttleHeading = hSignal;

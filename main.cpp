@@ -12,24 +12,24 @@ int main(void){
     BoatController boatController(&boat);
     boat.currentPosition.x = 0.0;
     boat.currentPosition.y = 0.0;
-    boat.setpointPosition.x = 1.0;
-    boat.setpointPosition.y = 1.0;
+    boat.setpointPosition.x = -30.0;
+    boat.setpointPosition.y = 32.0;
     boat.mass = 10;
     boat.angularMass = 5;
     boat.azimuthThruster[0].localLocation = Vector2<float>(0, 1);
     boat.azimuthThruster[0].maxForce = 10;
     boat.azimuthThruster[0].rotation = 0;
     boat.azimuthThruster[0].normalRotation = M_PI_2;
-    boat.azimuthThruster[0].throttle = 1;
+    boat.azimuthThruster[0].throttle = 0;
     boat.azimuthThruster[1].localLocation = Vector2<float>(0, -1);
-    boat.azimuthThruster[1].maxForce = 0;
+    boat.azimuthThruster[1].maxForce = 10;
     boat.azimuthThruster[1].rotation = 0;
     boat.azimuthThruster[1].normalRotation = M_PI_2;
     boat.azimuthThruster[1].throttle = 0;
     boat.currentHeading = 0;
 
 	cout << "time,thruster0rotation,thrust0,thruster1rotation,thrust1,x,y,errorX,errorY,errorH" << endl;
-    for (int i = 0; i < 3000; ++i)
+    for (int i = 0; i < 4500; ++i)
     {
 		for (int j = 0; j < 10; ++j)
 		{
