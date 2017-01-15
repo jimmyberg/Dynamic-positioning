@@ -6,6 +6,8 @@
 
 using namespace std;
 
+int i, j;
+
 int main(void){
     Boat boat;
     SimulatedWorld simulation(&boat, 0.001);
@@ -13,9 +15,9 @@ int main(void){
     boat.currentPosition.x = 0.0;
     boat.currentPosition.y = 0.0;
     boat.currentHeading = 0.0;
-    boat.setpointPosition.x = 0.0;
+    boat.setpointPosition.x = 30.0;
     boat.setpointPosition.y = 0.0;
-    boat.setpointHeading = M_PI_2;
+    boat.setpointHeading = 1.0;
     boat.mass = 10;
     boat.angularMass = 5;
     boat.azimuthThruster[0].localLocation = Vector2<float>(0, 1);
@@ -28,12 +30,11 @@ int main(void){
     boat.azimuthThruster[1].rotation = 0;
     boat.azimuthThruster[1].normalRotation = M_PI_2;
     boat.azimuthThruster[1].throttle = 0;
-    boat.currentHeading = 0;
 
 	cout << "time,thruster0rotation,thrust0,thruster1rotation,thrust1,x,y,heading,errorX,errorY,errorH,xSignal,ySignal,hSignal" << endl;
-    for (int i = 0; i < 4500; ++i)
+    for (i = 0; i < 4500; ++i)
     {
-		for (int j = 0; j < 10; ++j)
+		for (j = 0; j < 10; ++j)
 		{
 			simulation.calculateWorldTick();
 

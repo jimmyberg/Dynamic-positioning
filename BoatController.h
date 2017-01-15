@@ -36,6 +36,7 @@ class BoatController{
 		PIDController hController;
 
         void controlFunction();
-		float calculateHeading(Vector2<float> currentPosition, Vector2<float> setpointPosition);
+        Vector2<float> getHeadingVector(float hSignal, float left, float right);
+        float thresholding(float error, float threshold, float left, float right);
 };
 #endif
