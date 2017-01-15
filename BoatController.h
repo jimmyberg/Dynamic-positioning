@@ -18,6 +18,10 @@ class BoatController{
 
         void singleStep();
 
+        float xSignal = 0.0;
+        float ySignal = 0.0;
+        float hSignal = 0.0;
+
 	private:
         Boat *boat;
         std::thread controlThread;

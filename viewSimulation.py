@@ -18,20 +18,24 @@ for row in reader:
 plt.figure(1)
 plt.subplot(221)
 plt.legend(plt.plot(data['time'], data['x'], 'r',
-                    data['time'], data['y'], 'b'),
-           ['x', 'y'])
+                    data['time'], data['y'], 'g',
+                    data['time'], data['heading'], 'b'),
+           ['x', 'y', 'heading'])
 plt.axhline(0, color='black')
 
 plt.subplot(222)
 plt.legend(plt.plot(data['time'], data['thruster0rotation'], 'g',
-                    data['time'], data['thruster1rotation'], 'y'),
-           ["thrust0rot", "thrust1rot"])
+                    data['time'], data['thruster1rotation'], 'y',
+                    data['time'], data['thrust0'], 'b',
+                    data['time'], data['thrust1'], 'r'),
+           ["thrust0rot", "thrust1rot", "thrust0", "thrust1"])
 plt.axhline(0, color='black')
 
 plt.subplot(223)
-plt.legend(plt.plot(data['time'], data['thrust0'], 'b',
-                    data['time'], data['thrust1'], 'r'),
-           ["thrust0", "thrust1"])
+plt.legend(plt.plot(data['time'], data['xSignal'], 'r',
+                    data['time'], data['ySignal'], 'g',
+                    data['time'], data['hSignal'], 'b'),
+           ['xSignal', 'ySignal', "hSignal"])
 plt.axhline(0, color='black')
 
 plt.subplot(224)

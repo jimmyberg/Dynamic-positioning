@@ -14,9 +14,9 @@ float BoatController::calculateHeading(Vector2<float> currentPosition, Vector2<f
 BoatController::BoatController(Boat *b):boat(b){
     //Create the PIDController instances
     //NEED TO ADD A WAY TO SET THE CONSTANTS
-    xController = PIDController(2.0, 0.0, 10.0, 0.0, 0.0, 0.1);
-    yController = PIDController(2.0, 0.0, 10.0, 0.0, 0.0, 0.1);
-    hController = PIDController(2.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    xController = PIDController(0.2, 0.0, 1.0, 0.0, 0.0, 1.0);
+    yController = PIDController(0.2, 0.0, 1.0, 0.0, 0.0, 1.0);
+    hController = PIDController(2.0, 0.0, 1.0, 0.0, 0.0, (1.0/M_PI));
 }
 
 BoatController::~BoatController(){
@@ -74,17 +74,24 @@ void BoatController::singleStep(){
     float errorY = boat->setpointPosition.y - boat->currentPosition.y;
     float errorH = boat->setpointHeading - boat->currentHeading;
 
-    float xSignal = xController.calculateOutput(errorX, periodTime);
-    float ySignal = yController.calculateOutput(errorY, periodTime);
-    float hSignal = hController.calculateOutput(errorH, periodTime);
+    xSignal = xController.calculateOutput(errorX, periodTime);
+    ySignal = yController.calculateOutput(errorY, periodTime);
+    hSignal = hController.calculateOutput(errorH, periodTime);
 
-    float anglePosition = atan2(ySignal, xSignal) - M_PI_2 + boat->currentHeading;
-    float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
+    float anglePosition, throttlePosition;
+
+    if(errorX >= 0.01 || errorY >= 0.01 ){
+        anglePosition = atan2(ySignal, xSignal) - M_PI_2 + boat->currentHeading;
+        throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
+    }else{
+        anglePosition = 0.0;
+        anglePosition = 0.0;
+    }
 
     float throttleHeading = hSignal;
 
-    float angle1Heading = 0.0;
-    float angle2Heading = 0.0;
+    float angle1Heading = (hSignal > 0.01) ? (M_PI + M_PI_2) : M_PI_2;
+    float angle2Heading = (hSignal > 0.01) ? M_PI_2 : (M_PI + M_PI_2);
 
     boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-1.0, (float)1.0);        
     boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading);

@@ -12,8 +12,10 @@ int main(void){
     BoatController boatController(&boat);
     boat.currentPosition.x = 0.0;
     boat.currentPosition.y = 0.0;
-    boat.setpointPosition.x = -30.0;
-    boat.setpointPosition.y = 32.0;
+    boat.currentHeading = 0.0;
+    boat.setpointPosition.x = 0.0;
+    boat.setpointPosition.y = 0.0;
+    boat.setpointHeading = M_PI_2;
     boat.mass = 10;
     boat.angularMass = 5;
     boat.azimuthThruster[0].localLocation = Vector2<float>(0, 1);
@@ -28,7 +30,7 @@ int main(void){
     boat.azimuthThruster[1].throttle = 0;
     boat.currentHeading = 0;
 
-	cout << "time,thruster0rotation,thrust0,thruster1rotation,thrust1,x,y,errorX,errorY,errorH" << endl;
+	cout << "time,thruster0rotation,thrust0,thruster1rotation,thrust1,x,y,heading,errorX,errorY,errorH,xSignal,ySignal,hSignal" << endl;
     for (int i = 0; i < 4500; ++i)
     {
 		for (int j = 0; j < 10; ++j)
@@ -46,9 +48,13 @@ int main(void){
 			<< boat.azimuthThruster[1].throttle << ","
 			<< boat.currentPosition.x << ","
 			<< boat.currentPosition.y << ","
+            << boat.currentHeading << ","
             << errorX << ","
             << errorY << ","
-            << errorH
+            << errorH << ","
+            << boatController.xSignal << ","
+            << boatController.ySignal << ","
+            << boatController.hSignal
 			<< endl;
 		}
 		boatController.singleStep();
