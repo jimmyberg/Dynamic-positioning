@@ -16,6 +16,12 @@ class BoatController{
 
         bool isRunning() {return running;};
 
+        void singleStep();
+
+        float xSignal = 0.0;
+        float ySignal = 0.0;
+        float hSignal = 0.0;
+
 	private:
         Boat *boat;
         std::thread controlThread;
@@ -25,11 +31,12 @@ class BoatController{
         bool running = false;
 
         //Controllers
-        PIDController *xController;
-		PIDController *yController;
-		PIDController *hController;
+        PIDController xController;
+		PIDController yController;
+		PIDController hController;
 
         void controlFunction();
-		float calculateHeading(Vector2<float> currentPosition, Vector2<float> setpointPosition);
+        Vector2<float> getHeadingVector(float hSignal, float left, float right);
+        float thresholding(float error, float threshold, float left, float right);
 };
 #endif

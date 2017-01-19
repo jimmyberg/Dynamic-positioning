@@ -11,25 +11,18 @@
 class BaseThurster{
 public:
 	Vector2<float> localLocation;
-	float normalRotation;
-	float throttle;
-	float maxForce;
+	float normalRotation = 0;
+	float throttle = 0;
+	float maxForce = 0;
 };
 
 class AzimuthThruster: public BaseThurster{
 public:
-	float rotation;
-	float currentRotation;
+	float rotation = 0;
 };
 
 class Boat{
 public:
-	Vector2<float> getPosition();
-	void setSetpointPosition(Vector2<float> position);
-
-	float getHeading();
-	void setSetpointHeading(float heading);
-
 	AzimuthThruster azimuthThruster[2];
 	//Positional states
 	//SensorCalculations sensorCalculations;
@@ -42,7 +35,7 @@ public:
 	//Physical properies
 	float mass;
 	float angularMass;
-	Vector2<float> directionalDamping;
-	float angularDamping;
+	Vector2<float> directionalDamping = 0;
+	float angularDamping = 0;
 };
 #endif

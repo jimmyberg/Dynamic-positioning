@@ -1,6 +1,3 @@
 [submodule "Vector2"]
 	path = Vector2
 	url = https://github.com/overlord1123/Vector2.git
-[submodule "FlowSerial"]
-	path = FlowSerial
-	url = https://github.com/overlord1123/FlowSerial.git

@@ -1,44 +1,50 @@
 #include "BoatController.h"
 #include <math.h>
 #include "ExtraFunctions.h"
+#include "Vector2/Vector2.hpp"
 
 #define PI 3.14159265
 
+/*
 float BoatController::calculateHeading(Vector2<float> currentPosition, Vector2<float> setpointPosition){
     float x = boat->setpointPosition.x - boat->currentPosition.x;
     float y = boat->setpointPosition.y - boat->currentPosition.y;
 
     return atan2 (y,x);
 }
+*/
 
-BoatController::BoatController(Boat *b){
-    //Store the pointer to the boat object
-    boat = b;
-
+BoatController::BoatController(Boat *b) : boat(b)
+{
     //Create the PIDController instances
     //NEED TO ADD A WAY TO SET THE CONSTANTS
-    xController = new PIDController;
-    yController = new PIDController;
-    hController = new PIDController;
+    xController = PIDController(0.3, 0.0, 1.8, 0.0, 0.0, 1.0);
+    yController = PIDController(0.3, 0.0, 1.8, 0.0, 0.0, 1.0);
+    hController = PIDController(2.0, 0.0, 5.0, 0.0, 0.0, (1.0 / M_PI));
 }
 
-BoatController::~BoatController(){
-    stopControl();
+BoatController::~BoatController()
+{
+    //stopControl();
 }
 
-void BoatController::startControl(){
+void BoatController::startControl()
+{
     running = true;
     lastTime = std::chrono::high_resolution_clock::now();
     controlThread = std::thread(&BoatController::controlFunction, this);
 }
 
-void BoatController::stopControl(){
+void BoatController::stopControl()
+{
     running = false;
     controlThread.join();
 }
 
-void BoatController::controlFunction(){
-    while (running){
+void BoatController::controlFunction()
+{
+    while (running)
+    {
         currentTime = std::chrono::high_resolution_clock::now();
         periodTime = currentTime - lastTime;
         lastTime = currentTime;
@@ -48,9 +54,9 @@ void BoatController::controlFunction(){
         float errorY = boat->currentPosition.y - boat->setpointPosition.y;
         float errorH = boat->currentHeading - boat->setpointHeading;
 
-        float xSignal = xController->calculateOutput(errorX, periodTime);
-        float ySignal = yController->calculateOutput(errorY, periodTime);
-        float hSignal = hController->calculateOutput(errorH, periodTime);
+        float xSignal = xController.calculateOutput(errorX, periodTime);
+        float ySignal = yController.calculateOutput(errorY, periodTime);
+        float hSignal = hController.calculateOutput(errorH, periodTime);
 
         float anglePosition = atan2(ySignal, xSignal);
         float throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
@@ -60,11 +66,110 @@ void BoatController::controlFunction(){
         float angle1Heading = (hSignal > 0.0) ? M_PI_2 : (M_PI + M_PI_2);
         float angle2Heading = (hSignal > 0.0) ? (M_PI + M_PI_2) : M_PI_2;
 
-        boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);        
+        boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-1.0, (float)1.0);
         boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading) / 2.0;
-        boat->azimuthThruster[1].throttle = limit(throttlePosition + throttleHeading, (float)-100.0, (float)100.0);
+        boat->azimuthThruster[1].throttle = limit(throttlePosition + throttleHeading, (float)-1.0, (float)1.0);
         boat->azimuthThruster[1].rotation = (anglePosition + angle2Heading) / 2.0;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+void BoatController::singleStep()
+{
+    periodTime = std::chrono::duration<float>(std::chrono::milliseconds(10));
+
+    //Calculate the current error in the position data
+    float errorX = boat->setpointPosition.x - boat->currentPosition.x;
+    float errorY = boat->setpointPosition.y - boat->currentPosition.y;
+    float errorH = boat->setpointHeading - boat->currentHeading;
+
+    xSignal = xController.calculateOutput(errorX, periodTime);
+    ySignal = yController.calculateOutput(errorY, periodTime);
+    hSignal = hController.calculateOutput(errorH, periodTime);
+
+    Vector2<float> positionVector(xSignal, ySignal);
+    positionVector.rotate(-M_PI_2);
+
+    Vector2<float> heading1Vector = BoatController::getHeadingVector(hSignal, M_PI_2, M_PI + M_PI_2);
+    Vector2<float> heading2Vector = BoatController::getHeadingVector(hSignal, M_PI + M_PI_2, M_PI_2);
+    ;
+
+    Vector2<float> thruster1Vector = positionVector + heading1Vector;
+    Vector2<float> thruster2Vector = positionVector + heading2Vector;
+
+    if (thruster1Vector.absolute() > 0.01)
+    {
+        boat->azimuthThruster[0].throttle = limit(thruster1Vector.absolute(), (float)-1.0, (float)1.0);
+        boat->azimuthThruster[0].rotation = atan2(thruster1Vector.y, thruster1Vector.x);
+    }
+    else
+    {
+        boat->azimuthThruster[0].throttle = 0.0;
+        boat->azimuthThruster[0].rotation = 0.0;
+    }
+
+    if (thruster2Vector.absolute() > 0.01)
+    {
+        boat->azimuthThruster[1].throttle = limit(thruster2Vector.absolute(), (float)-1.0, (float)1.0);
+        boat->azimuthThruster[1].rotation = atan2(thruster2Vector.y, thruster2Vector.x);
+    }
+    else
+    {
+        boat->azimuthThruster[1].throttle = 0.0;
+        boat->azimuthThruster[1].rotation = 0.0;
+    }
+    /*
+    float anglePosition, throttlePosition;
+
+    if (fabs(xSignal) >= 0.01 || fabs(ySignal) >= 0.01)
+    {
+        anglePosition = atan2(ySignal, xSignal) - M_PI_2;
+        throttlePosition = sqrt(pow(xSignal, 2) + pow(ySignal, 2));
+    }
+    else
+    {
+        anglePosition = 0.0;
+        throttlePosition = 0.0;
+    }
+
+    float throttleHeading = (fabs(hSignal) > 0.01) ? fabs(hSignal) : 0.0;
+
+    float angle1Heading = BoatController::thresholding(hSignal, 0.01, M_PI_2, M_PI + M_PI_2);
+    float angle2Heading = BoatController::thresholding(hSignal, 0.01, M_PI + M_PI_2, M_PI_2);
+
+    boat->azimuthThruster[0].throttle = limit(throttlePosition + throttleHeading, (float)-1.0, (float)1.0);
+    boat->azimuthThruster[0].rotation = (anglePosition + angle1Heading);
+    boat->azimuthThruster[1].throttle = limit(throttlePosition + throttleHeading, (float)-1.0, (float)1.0);
+    boat->azimuthThruster[1].rotation = (anglePosition + angle2Heading);
+    */
+}
+
+Vector2<float> BoatController::getHeadingVector(float hSignal, float left, float right)
+{
+    Vector2<float> out = {0.0, 0.0};
+
+    float throttle = (fabs(hSignal) > 0.01) ? fabs(hSignal) : 0.0;
+    float angle = BoatController::thresholding(hSignal, 0.01, left, right);
+
+    out.x = throttle * cos(angle);
+    out.y = throttle * sin(angle);
+
+    return out;
+}
+
+float BoatController::thresholding(float error, float threshold, float left, float right)
+{
+    if (error > threshold)
+    {
+        return left;
+    }
+    else if (error < -threshold)
+    {
+        return right;
+    }
+    else
+    {
+        return 0.0;
     }
 }
