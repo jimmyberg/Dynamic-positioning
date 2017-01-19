@@ -11,16 +11,36 @@
 #include <queue>
 #include <math.h>
 
-#define TRANSLATION 16383
+/**
+ * @brief      Class for sensor convertion.
+ */
 class SensorConvertion
 {
     public:
+        /**
+         * @brief      Constructor 
+         */
         SensorConvertion();
+        /**
+         * @brief      Destroys the object.
+         */
         ~SensorConvertion();
 
         //Long lat convertion
+        
+        /**
+         * @brief      Long lat convertion
+         *
+         * @return     Long lat in xyz
+         */
 	    DataWXYZ longLatToXYZ();
-        //Rotation convertion
+        /**
+         * @brief      Rotation convertion
+         *
+         * @param      location  The location
+         *
+         * @return     corrected location by using IMU data
+         */
         DataWXYZ convertIMUValues(DataWXYZ *location);
 
     private:        

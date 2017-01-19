@@ -3,27 +3,59 @@
 
 #include <iostream>
 
+/**
+ * @brief      Class for coordinate.
+ */
 class Coordinate{
     public:
-        //constructors
+        /**
+         * @brief      Constructor to assign this class with data
+         *
+         * @param[in]  iLatitude   The latitude
+         * @param[in]  iLongitude  The longitude
+         * @param[in]  cNs         North south indicator. It is either n or s
+         * @param[in]  cEw         East west indicator. It is either e or w
+         */
         Coordinate(uint32_t iLatitude, uint32_t iLongitude, char cNs, char cEw);
+        /**
+         * @brief      Empty constructor
+         */
         Coordinate();
+        /**
+         * @brief      Destroys the object.
+         */
         ~Coordinate();
-        
-        //functions
-        // Get longitude value from class;
+        /**
+         * @brief      Gets the longitude.
+         *
+         * @return     The longitude.
+         */
         float getLongitude();
 
-        // Gets latitude value from class;
+        /**
+         * @brief      Gets the latitude.
+         *
+         * @return     The latitude.
+         */
         float getLatitude();
 
-        // gets East or West value from class
+        /**
+         * @brief      Gets the east west indicator.
+         *
+         * @return     The east west indicator.
+         */
         char getEW();
 
-        // gets North or South value from class
+        /**
+         * @brief      Gets the noth south indicator.
+         *
+         * @return     The noth south indicator.
+         */
         char getNS();
 
-        // Prints the longitude and Latitude;
+        /**
+         * @brief      print function
+         */
         void printLongLat();
 
     private:

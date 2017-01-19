@@ -6,27 +6,54 @@
 #include "ip_connection.h"
 #include "brick_imu_v2.h"
 
+/**
+ * Defines hostname
+ */
 #define HOST "localhost"
+/**
+ * Defines used port number
+ */
 #define PORT 4223
+/**
+ * Defines IMUUID for current sensor
+ */
 #define IMUUID "5VGPJ3" // Change XYZ to the UID of your Bricklet
 
-
+/**
+ * @brief      Class for sensor imu.
+ */
 class SensorIMU{
 public:
-    // Create IP connection and device object
+    /**
+     * @brief      Create IP connection and device object
+     */
     void create();
 
-    // Calls ipcon_disconnect internally and destroys IMU-object
+    /**
+     * @brief      Calls ipcon_disconnect internally and destroys IMU-object
+     */
     void destroy();
 
-    // Connect to brickd, ipcon
+    /**
+     * @brief      Connect to brickd, ipcon
+     *
+     * @return     0 for success
+     */
     float connect();
     
-    // !!Don't use device before ipcon is connected!!
-    // Determine Quaternion
+    /**
+     * @brief      Don't use device before ipcon is connected!! Determine
+     *             Quaternion
+     *
+     * @return     0 for succes
+     */
     float determineQuaternion();
 
-    // Get current Quaternion
+    /**
+     * @brief      Gets the quaternion.
+     *
+     * @return     The quaternion.
+     */
     DataWXYZ getQuaternion();
     
 private:

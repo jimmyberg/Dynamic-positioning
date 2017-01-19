@@ -15,28 +15,64 @@
 #include <queue>
 #include <math.h>
 
+/**
+ * @brief      Class for sensor threading.
+ * @details    From here thread can be started to accuire data.
+ */
 class SensorThreading
 {
 public:
-	//Start stop control thread
-	//GPS
+	/**
+	 * @brief      Starts sensor gps reading.
+	 */
 	void startSensorGPSReading();
+	/**
+	 * @brief      Stops sensor gps reading.
+	 */
 	void stopSensorGPSReading();
-
+	/**
+	 * @brief      Determines if gps running.
+	 *
+	 * @return     True if gps running, False otherwise.
+	 */
 	bool isGPSRunning() { return GPSRunning; };
 
-	//IMU
+	/**
+	 * @brief      Starts sensor imu reading.
+	 */
 	void startSensorIMUReading();
+	/**
+	 * @brief      Stops sensor imu reading.
+	 */
 	void stopSensorIMUReading();
-
+	/**
+	 * @brief      Determines if imu running.
+	 *
+	 * @return     True if imu running, False otherwise.
+	 */
 	bool isIMURunning() { return IMURunning; };
+	/**
+	 * @brief      Gets the imu from queue.
+	 */
 	void getIMUFromQueue();
 
-	//Acceleration
+	/**
+	 * @brief      Starts sensor acceleration reading.
+	 */
 	void startSensorAccelerationReading();
+	/**
+	 * @brief      Stops sensor acceleration reading.
+	 */
 	void stopSensorAccelerationReading();
-
+	/**
+	 * @brief      Determines if acceleration running.
+	 *
+	 * @return     True if acceleration running, False otherwise.
+	 */
 	bool isAccelerationRunning() { return AccelerationRunning; };
+	/**
+	 * @brief      Gets the acceleration from queue.
+	 */
 	void getAccelerationFromQueue();
 
 	/* ------ Circular buffers ------*/
@@ -48,11 +84,14 @@ public:
 	int IMUindexR = 0;
 	int IMUindexW = 0;
 
-	//std::queue<Coordinate> GPSCoordinates;
-	//std::queue<DataWXYZ> IMUPositions;
 	std::queue<DataWXYZ> AccelerationPositions;
-
+	/**
+	 * @brief      Constructor
+	 */
 	SensorThreading();
+	/**
+	 * @brief      Destroys the object.
+	 */
 	~SensorThreading();
 
 private:	

@@ -5,30 +5,58 @@
 #include "ip_connection.h"
 #include "bricklet_accelerometer.h"
 
+/**
+ * define host name
+ */
 #define HOST "localhost"
+/**
+ * define used port number
+ */
 #define PORT 4223
-#define ACCELEROUID "5VGPJ3" // Change XYZ to the UID of your Bricklet
+/**
+ * Change XYZ to the UID of your Bricklet
+ */
+#define ACCELEROUID "5VGPJ3"
 
-
+/**
+ * @brief      Class for sensor accelerometer.
+ */
 class SensorAccelerometer{
 public:
-  // Create IP connection and device object
+  /**
+   * @brief      Create IP connection and device object
+   */
   void create();
 
-  // Calls ipcon_disconnect internally and destroys gps-object
+  /**
+   * @brief      Calls ipcon_disconnect internally and destroys gps-object
+   */
   void destroy();
 
-  // Connect to brickd, ipcon
+  /**
+   * @brief      Connect to brickd, ipcon
+   *
+   * @return     0 for success
+   */
   float connect();
 
-  // !!Don't use device before ipcon is connected!!
-  // determines // current acceleration (unit is g/1000)
+  /**
+   * @brief      !!Don't use device before ipcon is connected!! determines //
+   *             current acceleration (unit is g/1000)
+   *
+   * @return     0 for succes
+   */
   float determineAcceleration();
 
-  // prints data
-  void printXYZ();
-
-  // Get current Acceleration
+  /**
+   * @brief      prints data
+   */
+  void printXYZ();  
+  	/**
+  	 * @brief      Gets the acceleration.
+  	 *
+  	 * @return     The acceleration.
+  	 */
     DataWXYZ getAcceleration();
     
 private:

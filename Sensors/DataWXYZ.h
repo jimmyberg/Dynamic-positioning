@@ -3,28 +3,63 @@
 
 #include <iostream>
 
+/**
+ * @brief      Class for data wxyz. These are quaternion numbers for the Gyro data.
+ */
 class DataWXYZ{
     public:
-        //constructors
+        /**
+         * @brief      Constructor
+         *
+         * @param[in]  wVal  The w value
+         * @param[in]  xVal  The x value
+         * @param[in]  yVal  The y value
+         * @param[in]  zVal  The z value
+         */
         DataWXYZ(float wVal, float xVal, float yVal, float zVal);
+        /**
+         * @brief      Empty constructor
+         */
         DataWXYZ();
+        /**
+         * @brief      Destroys the object.
+         */
         ~DataWXYZ();
         
         //functions
 
 
-        // gets W
+        /**
+         * @brief      Gets the w.
+         *
+         * @return     The w.
+         */
         float getW();
 
-        // gets X
+        /**
+         * @brief      Gets the x.
+         *
+         * @return     The x.
+         */
         float getX();
 
-        // gets Y
+        /**
+         * @brief      Gets the y.
+         *
+         * @return     The y.
+         */
         float getY();
 
-        // gets Z
+        /**
+         * @brief      Gets the z.
+         *
+         * @return     The z.
+         */
         float getZ();
 
+        /**
+         * @brief      Prints the data to the terminal
+         */
         void printData();
 
     private:

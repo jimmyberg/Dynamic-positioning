@@ -1,5 +1,7 @@
 #include "SensorThreading.h"
 
+#define TRANSLATION 16383
+
 static SensorThreading sensorThreading;
 
 SensorConvertion::SensorConvertion(){

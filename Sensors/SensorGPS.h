@@ -6,26 +6,53 @@
 #include "ip_connection.h"
 #include "bricklet_gps.h"
 
+/**
+ * Defines hostname
+ */
 #define HOST "localhost"
+/**
+ * Defines used port
+ */
 #define PORT 4223
+/**
+ * Define GPSUID for current GPS sensor
+ */
 #define GPSUID "svS" // Change XYZ to the UID of your Bricklet
 
-
+/**
+ * @brief      Class for sensor gps.
+ */
 class SensorGPS{
 public:
-    // Create IP connection and device object
+    /**
+     * @brief      Create IP connection and device object
+     */
     void create();
-    // Calls ipcon_disconnect internally and destroys gps-object
+    /**
+     * @brief      Calls ipcon_disconnect internally and destroys gps-object
+     */
     void destroy();
 
-    // Connect to brickd, ipcon
+    /**
+     * @brief      Connect to brickd, ipcon
+     *
+     * @return     0 for succes
+     */
     float connect();
     
-    // !!Don't use device before ipcon is connected!!
-    // determines current coordinates
+    /**
+     * @brief      !!Don't use device before ipcon is connected!! determines
+     *             current coordinates
+     *
+     * @return     0 for succes
+     */
     float determineCoordinates();
 
-    // Get current coordinates
+    /**
+     * @brief      Gets the coordinate.
+     *
+     * @return     The coordinate.
+     */
     Coordinate getCoordinate();
     
 private:
