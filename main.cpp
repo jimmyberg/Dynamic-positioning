@@ -56,8 +56,8 @@ int main(void){
     #ifdef _INTERACTIVE_TERMINAL_DYNPOS_
     cout << "Ready. Press enter to start" << endl;
     cin.get();
-	cout << "time,thruster0rotation,thrust0,thruster1rotation,thrust1,x,y,heading,errorX,errorY,errorH,xSignal,ySignal,hSignal" << endl;
     #endif
+    cout << "time,thruster0rotation,thrust0,thruster1rotation,thrust1,x,y,heading,errorX,errorY,errorH,xSignal,ySignal,hSignal" << endl;
     for (i = 0; i < 45000; ++i)
     {
 		for (j = 0; j < 10; ++j)
