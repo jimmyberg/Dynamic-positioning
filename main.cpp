@@ -64,12 +64,14 @@ int main(void){
 		{
 			simulation.calculateWorldTick();
         }
+
+        boatController.singleStep();
+
         if(i % 50 == 0){
             float errorX = boat.setpointPosition.x - boat.currentPosition.x;
             float errorY = boat.setpointPosition.y - boat.currentPosition.y;
             float errorH = boat.setpointHeading - boat.currentHeading;
 
-    		boatController.singleStep();
             cout.width(12);
             cout << ((i * 10) + j) * 0.001 << ",";
             cout.width(12);
