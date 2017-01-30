@@ -118,27 +118,11 @@ void BoatController::singleStep()
     Vector2<float> thruster1Vector = positionVector + heading1Vector;
     Vector2<float> thruster2Vector = positionVector + heading2Vector;
 
-    if (thruster1Vector.absolute() > 0.01)
-    {
-        boat->azimuthThruster[0].throttle = limit(thruster1Vector.absolute(), (float)-1.0, (float)1.0);
-        boat->azimuthThruster[0].rotation = atan2(thruster1Vector.y, thruster1Vector.x);
-    }
-    else
-    {
-        boat->azimuthThruster[0].throttle = 0.0;
-        boat->azimuthThruster[0].rotation = 0.0;
-    }
+    boat->azimuthThruster[0].throttle = limit(thruster1Vector.absolute(), (float)-1.0, (float)1.0);
+    boat->azimuthThruster[0].rotation = atan2(thruster1Vector.y, thruster1Vector.x);
 
-    if (thruster2Vector.absolute() > 0.01)
-    {
-        boat->azimuthThruster[1].throttle = limit(thruster2Vector.absolute(), (float)-1.0, (float)1.0);
-        boat->azimuthThruster[1].rotation = atan2(thruster2Vector.y, thruster2Vector.x);
-    }
-    else
-    {
-        boat->azimuthThruster[1].throttle = 0.0;
-        boat->azimuthThruster[1].rotation = 0.0;
-    }
+    boat->azimuthThruster[1].throttle = limit(thruster2Vector.absolute(), (float)-1.0, (float)1.0);
+    boat->azimuthThruster[1].rotation = atan2(thruster2Vector.y, thruster2Vector.x);
 }
 
 Vector2<float> BoatController::getHeadingVector(float hSignal, float left, float right)
