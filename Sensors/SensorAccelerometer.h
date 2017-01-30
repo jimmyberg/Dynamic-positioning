@@ -4,6 +4,7 @@
 #include "../PhysicalDefinitions.h"
 #include "ip_connection.h"
 #include "bricklet_accelerometer.h"
+#include "DataWXYZ.h"
 
 /**
  * define host name
