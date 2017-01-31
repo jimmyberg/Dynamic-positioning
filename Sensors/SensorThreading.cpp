@@ -1,5 +1,8 @@
 #include "SensorThreading.h"
 
+#define _DISPLAY_COORDINATES_SENSORTHREADING
+#define _DISPLAY_IMU_VALUES_SENSORTHREADING
+
 SensorThreading::SensorThreading(){}
 SensorThreading::~SensorThreading(){}
 
@@ -31,7 +34,9 @@ void SensorThreading::SensorGPSReadingFunction(){
 			sensorGPS.determineCoordinates();
 
 			GPSCoordinates[GPSindexW % 10] = sensorGPS.getCoordinate();
-			//GPSCoordinates[GPSindexW % 10].printLongLat();
+			#ifdef _DISPLAY_COORDINATES_SENSORTHREADING
+			GPSCoordinates[GPSindexW % 10].printLongLat();
+			#endif
 			GPSindexW++;
 		}
 	}
@@ -66,7 +71,9 @@ void SensorThreading::SensorIMUReadingFunction(){
 
 			sensorIMU.determineQuaternion();
 			IMUValues[IMUindexW % 10] = sensorIMU.getQuaternion();
-			//IMUValues[IMUindexW % 10].printData();
+			#ifdef _DISPLAY_IMU_VALUES_SENSORTHREADING
+			IMUValues[IMUindexW % 10].printData();
+			#endif
 			IMUindexW++;
 		}
 	}
